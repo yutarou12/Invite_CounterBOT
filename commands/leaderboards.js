@@ -7,7 +7,7 @@ module.exports = {
     aliases: ['lb'],
     args: [],
     description: ["招待数ランキングを表示します"],
-    async execute(message, args) {
+    async execute(message) {
 
         if(!message.guild.members.cache.get(config.BOT_CLIENT_ID).hasPermission("CREATE_INSTANT_INVITE")) return message.channel.send("このコマンドの実行には、権限:「招待の作成」が必要です")
         message.guild.fetchInvites().then((invites) => {
