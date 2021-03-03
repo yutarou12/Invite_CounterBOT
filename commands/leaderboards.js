@@ -33,8 +33,8 @@ module.exports = {
             const sortedInvites = Object.keys(inviteCounter).sort((a, b) => inviteCounter[b] - inviteCounter[a])
 
             if (sortedInvites.length == 0) return message.channel.send("Top Inviters",NobodyText)
-            if (sortedInvites.length < 5) sortedInvites.length = 5
             else if (sortedInvites.length > 10) sortedInvites.length = 10
+            else  sortedInvites.length = sortedInvites.length
 
             let i = 1
             for ( const invite of sortedInvites ) {
