@@ -22,6 +22,7 @@ module.exports = {
             const help_embed = new MessageEmbed()
             .setAuthor("Help | Prefix : ic.")
             .setDescription("```\nこのBotはPrefixだけでなくメンションでも反応するようになっています\n```\n`ic.help` : これを表示します\n`ic.leaderboards` : 招待数のTOP10を表示します\n`ic.mylink` : 自分の招待リンクの一覧を表示します\n`ic.link_info` : 招待リンクの情報を表示します")
+            .addField("BOTの招待", "[こちら](https://discord.com/api/oauth2/authorize?client_id=816471387392049184&permissions=19489&scope=bot)")
             .setFooter("コマンドの詳しい説明は、ic.help [コマンド名]")
 
             message.channel.send(help_embed)
