@@ -24,6 +24,7 @@ client.on('ready', async () => {
     });
 
     console.log(`${client.user.username} | ${client.user.id}`);
+    console.log(`Server Count : ${client.guilds.cache.size}`)
     console.log(`Discord Login`);
 });
 
