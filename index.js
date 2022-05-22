@@ -1,9 +1,12 @@
-const Discord = require('discord.js');
-const client = new Discord.Client({ws : { intents: Discord.Intents.ALL } });
-const fs = require('fs'),
-    config = require('./config.json')
+const {Intents, Client, Collection, MessageEmbed} = require('discord.js');
+const client = new Client({ intents: [Intents.FLAGS.GUILD_INVITES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS] });
+const fs = require('fs')
 
-client.commands = new Discord.Collection();
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
@@ -28,10 +31,10 @@ client.on('ready', async () => {
     console.log(`Discord Login`);
 });
 
-client.on('message', async message => {
+client.on('messageCreate', async message => {
     if (message.author.bot) return;
 
-    let prefix = config.PREFIX;
+    let prefix = process.env.PREFIX;
 
     const mention_match = message.content.match(/^<@(!|&|)(\d{17,})>/);
     if (mention_match) {
@@ -63,9 +66,9 @@ client.on('message', async message => {
             guild_name = message.guild.name;
         }
 
-        const embed = {
-            color: 0xf04747,
+        const embed = new MessageEmbed({
             title: `${command.name}にてエラー発生`,
+            color: 0xf04747,
             author: {
                 name: message.author.tag,
                 icon_url: message.author.avatarURL({ format: 'png', dynamic: true, size:2048 }),
@@ -77,19 +80,15 @@ client.on('message', async message => {
                 text: `\nG:${guild_name} | C:${channel_name} `,
                 icon_url: icon
             },
-        };
-        console.log(embed);
+        })
 
-        const log_channel = client.channels.cache.get(config.LOG_CHANNEL);
-        if (log_channel) await log_channel.send({embed:embed});
-        await message.channel.send({
-            embed:{
-                color: 0xf04747,
-                title: `予期しない例外が発生しました`,
-            }
-        });
+        const log_channel = await client.channels.fetch(process.env.LOG_CHANNEL);
+        console.log(log_channel)
+        if (log_channel) await log_channel.send({embeds: [embed]});
+        const error_embed = new MessageEmbed({color: 0xf04747, title: '予期しない例外が発生しました'})
+        await message.channel.send({embeds: [error_embed]});
     }
 
 });
 
-client.login(config.TOKEN);
+client.login(process.env.TOKEN);

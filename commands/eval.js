@@ -1,5 +1,4 @@
-const { MessageAttachment, Client } = require('discord.js'),
-    client = new Client()
+const { MessageAttachment } = require('discord.js'),
     fs = require("fs");
 module.exports = {
     name: 'eval',
